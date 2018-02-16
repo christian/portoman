@@ -1,0 +1,75 @@
+@()
+
+@main("Portoman") {
+
+<h1>
+  Portoman
+</h1>
+
+<h2>
+  My portfolio
+</h2>
+
+<div class="mini-menu-wrapper">
+  <ul class="mini-menu">
+    <li><a href="">Overview</a></li>
+    <li><a href="">Fundamentals</a></li>
+    <li><a href="">Performance</a></li>
+    <li><a href="">Transactions</a></li>
+  </ul>
+</div>
+
+<div>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Symbol</th>
+      <th>Last Price</th>
+      <th>Change</th>
+      <th>Cost basis</th>
+      <th>Market value</th>
+      <th>Gain</th>
+      <th>Gain %</th>
+      <th>Day's gain</th>
+      <th>Overall return</th>
+    </tr>
+    <tr>
+      <td>Zalando</td>
+      <td>ZAL</td>
+      <td>47.95 (+1.20%)</td>
+      <td>0.00 (closed)</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>64.64%</td>
+    </tr>
+  </table>
+</div>
+
+
+<form action="/" class="hidden" id="add-transaction-form">
+
+  Symbol: <input type="text" name="symbol">
+  Type: <select name="type">
+  <option value="buy">Buy</option>
+  <option value="sell">Sell</option>
+</select>
+  Date: <input type="text" name="date">
+  Shares: <input type="text" name="shares">
+  Price: <input type="text" name="price">
+  Commission: <input type="text" name="commision">
+  Notes: <input type="text" name="notes">
+
+  <button type="button">Add</button>
+
+</form>
+
+
+<a href="#add-transaction">+ Add transaction</a>
+<a href="#">Import transactions</a>
+
+}
+
+
