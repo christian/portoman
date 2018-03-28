@@ -1,4 +1,4 @@
-@()
+@()(implicit flash: Flash, request: RequestHeader)
 
 @main("Portoman") {
 
@@ -68,7 +68,20 @@
 
 
 <a href="#add-transaction">+ Add transaction</a>
-<a href="#">Import transactions</a>
+
+
+
+<h3>Import transactions</h3>
+
+<p class="flash-error">@flash.get("error").getOrElse("")</p>
+<p class="flash-success">@flash.get("success").getOrElse("")</p>
+
+@helper.form(action = helper.CSRF(routes.HomeController.importFromCsv), 'enctype -> "multipart/form-data") {
+    <input type="file" name="csv_file">
+    <p>
+        <input type="submit">
+    </p>
+}
 
 }
 

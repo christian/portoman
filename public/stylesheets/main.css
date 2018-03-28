@@ -19,3 +19,15 @@ ul.mini-menu li {
 .hidden {
   display: none;
 }
+
+.flash-error {
+    padding: 5px;
+    border: 1px solid red;
+    color: red;
+}
+
+.flash-success {
+    padding: 5px;
+    border: 1px solid green;
+    color: green;
+}
