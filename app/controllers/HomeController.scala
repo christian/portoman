@@ -1,8 +1,11 @@
 package controllers
 
+import java.io.StringReader
 import java.nio.file.Paths
-import javax.inject._
 
+import javax.inject._
+import models.GoogleParser
+import org.apache.commons.csv.CSVFormat
 import play.api._
 import play.api.mvc._
 
@@ -18,14 +21,19 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   def importFromCsv() =  Action(parse.multipartFormData) { implicit request =>
     request.body.file("csv_file").map { csvFile =>
       val filename = Paths.get(csvFile.filename).getFileName
-      // csvFile.ref.moveTo(Paths.get(s"/tmp/$filename"), replace = true) // possible race condition
-
-      // csvFile.ref.getAbsolutePath
+      // csvFile.ref.moveTo(Paths.get(s"/tmp/$filename"), replace = true) // TODO possible race condition
 
       val source = scala.io.Source.fromFile(csvFile.ref.getAbsolutePath)
-      val lines = try source.mkString finally source.close()
+      val data = try source.mkString finally source.close()
 
-      play.Logger.info("Lines: "+ lines)
+      val lines = data.split("\n")
+      play.Logger.info("Lines: "+ lines.toString)
+      //lines.takeRight(lines.length - 1).foreach(line => GoogleParser.parse(line))
+
+      GoogleParser.parse(data)
+
+
+
 
       Redirect(routes.HomeController.index()).flashing(
         "success" -> "File has been uploaded")
