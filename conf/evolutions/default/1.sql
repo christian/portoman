@@ -6,7 +6,7 @@ CREATE TABLE securities (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     name varchar(255) NOT NULL,
     ticker varchar(10) NOT NULL,
-    close_price decimal(10, 2) NOT NULL,
+    close_price decimal(10, 2),
     PRIMARY KEY (id)
 );
 
@@ -27,8 +27,10 @@ CREATE TABLE transactions (
     security_id bigint(20) NOT NULL,
     units bigint(20) NOT NULL,
     price decimal(15, 2) NOT NULL,
-    createdAt timestamp,
+    created_at timestamp,
     position_id bigint(11),
+    commission decimal(15, 2),
+    notes varchar(255),
     PRIMARY KEY (id),
     FOREIGN KEY(position_id) REFERENCES positions(id),
     FOREIGN KEY(security_id) REFERENCES securities(id)
