@@ -10,6 +10,7 @@ import play.api.db.Database
 import anorm._
 import org.apache.commons.csv.CSVFormat
 import anorm.SqlParser._
+import models._
 
 case class Transaction(id: Option[Long],
                        uuid: Option[String],
@@ -21,17 +22,6 @@ case class Transaction(id: Option[Long],
                        positionId: Option[Long],
                        commission: BigDecimal,
                        notes: String)
-
-case class Security(id: Option[Long],
-                    name: String,
-                    ticker: String,
-                    closePrice: Option[BigDecimal])
-
-case class Position(id: Option[Long],
-                    status: String,
-                    securityId: Option[Long],
-                    totalUnits: Long,
-                    totalCost: BigDecimal) // TODO replace with Money
 
 //Symbol,Name,Type,Date,Shares,Price,Cash value,Commission,Notes
 //ZAL,Zalando SE,Buy,"Feb 9, 2016",195,26.49,,47.74,Initial ZAL buy
@@ -53,10 +43,6 @@ object GoogleParser {
         ticker=record.get(0), // Funny, "Symbol" doesn't work
         closePrice=None
       )
-
-      // TODO need to add
-      // - comments for transaction
-      // - commision for transaction
 
       val formatter = DateTimeFormatter.ofPattern("MMM d, uuuu")
       val dateTime = LocalDateTime.from(LocalDate.parse(record.get("Date"), formatter).atStartOfDay())
@@ -134,71 +120,4 @@ object Transaction {
 
 }
 
-object Security {
-
-  val parser: RowParser[Security] = int("id") ~ str("name") ~ str("ticker") map {
-    case id ~ name ~ ticker => Security(Some(id), name, ticker, None)
-  }
-
-  /**
-    * Insert security in DB.
-    * @param security
-    * @param db
-    * @return
-    */
-  def insert(security: Security)(implicit db: Connection): Option[Long] = {
-    val id: Option[Long] =
-      SQL("insert into securities(name, ticker, close_price) " +
-          "values ({name}, {ticker}, {closePrice})")
-      .on('name -> security.name,
-          'ticker -> security.ticker,
-          'closePrice -> security.closePrice).executeInsert()
-    id
-  }
-
-  /**
-    * Return security by ticker if it exists.
-    * @param ticker
-    * @param db
-    * @return
-    */
-  def get(ticker: String)(implicit db: Connection): Option[Security] = {
-    SQL("select * from securities where ticker = {ticker}")
-      .on('ticker -> ticker).as(parser.singleOpt)
-  }
-
-  def exists(ticker: String)(implicit db: Connection): Boolean = {
-    val numRecords =
-      SQL("select count(*) from securities where ticker = {ticker}")
-      .on('ticker -> ticker).as(scalar[Long].single)
-    numRecords != 0
-  }
-
-}
-
-object Position {
-
-  /**
-    * Insert position in DB.
-    * @param position
-    * @param securityId
-    * @param db
-    * @return
-    */
-  def insert(position: Position, securityId: Long)(implicit db: Connection): Option[Long] = {
-    val id: Option[Long] =
-      SQL("insert into positions(status, security_id, total_units, total_cost) " +
-          "values ({status}, {security_id}, {total_units}, {total_cost})")
-        .on('status -> position.status,
-          'security_id -> securityId,
-          'total_units -> position.totalUnits,
-          'total_cost -> position.totalCost).executeInsert()
-    id
-  }
-
-  def getAll() = {}
-
-  def get() = {}
-
-}
 
