@@ -4,6 +4,7 @@ import java.io.StringReader
 import java.nio.file.Paths
 import javax.inject._
 
+import core.StockDB
 import models.GoogleParser
 import org.apache.commons.csv.CSVFormat
 import play.api._
@@ -16,6 +17,10 @@ class HomeController @Inject()(cc: ControllerComponents,
 
 
   def index() = Action { implicit request: Request[AnyContent] =>
+    database.withConnection { implicit c =>
+      StockDB.getAll()
+    }
+
     Ok(views.html.index())
   }
 

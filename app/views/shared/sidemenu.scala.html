@@ -1,4 +1,4 @@
-@()
+@()(implicit request: RequestHeader)
 
 <div class="column is-one-fifth">
     <aside class="menu">
@@ -6,14 +6,14 @@
             General
         </p>
         <ul class="menu-list">
-            <li><a href="@routes.HomeController.index()">Dashboard</a></li>
+            <li><a @if(request.path == routes.HomeController.index().toString) { class="is-active" } href="@routes.HomeController.index()">Dashboard</a></li>
         </ul>
         <p class="menu-label">
             Transactions
         </p>
         <ul class="menu-list">
-            <li><a href='@routes.TransactionsController.list()'>Activity</a></li>
-            <li><a href='@routes.TransactionsController.importTx()'>Import</a></li>
+            <li><a @if(request.path == routes.TransactionsController.list().toString) { class="is-active" } href='@routes.TransactionsController.list()'>Activity</a></li>
+            <li><a @if(request.path == routes.TransactionsController.importTx().toString) { class="is-active" } href='@routes.TransactionsController.importTx()'>Import</a></li>
         </ul>
     </aside>
 </div>
