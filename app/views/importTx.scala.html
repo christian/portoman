@@ -1,0 +1,23 @@
+@()(implicit flash: Flash, request: RequestHeader)
+
+@main("Import transactions") {
+
+<section class="section">
+<h3>Import transactions</h3>
+
+@if(flash.data.contains("success")) {
+<div class="notification is-success">@flash.get("success")</div>
+} else if (flash.data.contains("error")) {
+<div class="notification is-danger">@flash.get("error")</div>
+}
+
+@helper.form(action = helper.CSRF(routes.TransactionsController.importFromCsv), 'enctype -> "multipart/form-data") {
+<input type="file" name="csv_file">
+<p>
+    <input type="submit">
+</p>
+}
+
+    </section>
+}
+

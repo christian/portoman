@@ -4,92 +4,38 @@
 
 @main("Portoman") {
 
+<div class="column">
 
-<section class="section">
+    <table class="table is-striped is-fullwidth">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Symbol</th>
+            <th>Type</th>
+            <th>Units</th>
+            <th>Price</th>
+            <th>Commission</th>
+            <th>Date</th>
+            <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for(tx <- transactions) {
+        <tr>
+            <td>@tx.name</td>
+            <td>@tx.ticker</td>
+            <td>@tx.typ</td>
+            <td>@tx.units</td>
+            <td>@tx.price</td>
+            <td>@tx.commission</td>
+            <td>@tx.createdAt</td>
+            <td>@tx.notes</td>
+        </tr>
+        }
+        </tbody>
 
-    <div class="container">
-        <h1 class="title">Portoman</h1>
-        <h2 class="subtitle">
-            A simple Portfolio Manager for Stocks
-        </h2>
+    </table>
 
-
-        <div class="columns">
-
-            <div class="column is-one-fifth">
-                <aside class="menu">
-                    <p class="menu-label">
-                        General
-                    </p>
-                    <ul class="menu-list">
-                        <li><a>Dashboard</a></li>
-                    </ul>
-                    <p class="menu-label">
-                        Administration
-                    </p>
-                    <ul class="menu-list">
-                        <li><a>Team Settings</a></li>
-                        <li>
-                            <a class="is-active">Manage Your Team</a>
-                            <ul>
-                                <li><a>Members</a></li>
-                                <li><a>Plugins</a></li>
-                                <li><a>Add a member</a></li>
-                            </ul>
-                        </li>
-                        <li><a href='@routes.TransactionsController.list()'>Transactions</a></li>
-                        <li><a>Cloud Storage Environment Settings</a></li>
-                        <li><a>Authentication</a></li>
-                    </ul>
-                    <p class="menu-label">
-                        Transactions
-                    </p>
-                    <ul class="menu-list">
-                        <li><a>Import</a></li>
-                        <li><a>Transfers</a></li>
-                        <li><a>Balance</a></li>
-                    </ul>
-                </aside>
-            </div>
-            
-            <div class="column">
-
-                <table class="table is-striped is-fullwidth">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Symbol</th>
-                        <th>Type</th>
-                        <th>Units</th>
-                        <th>Price</th>
-                        <th>Commission</th>
-                        <th>Date</th>
-                        <th>Notes</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @for(tx <- transactions) {
-                    <tr>
-                        <td>@tx.name</td>
-                        <td>@tx.ticker</td>
-                        <td>@tx.typ</td>
-                        <td>@tx.units</td>
-                        <td>@tx.price</td>
-                        <td>@tx.commission</td>
-                        <td>@tx.createdAt</td>
-                        <td>@tx.notes</td>
-                    </tr>
-                    }
-                    </tbody>
-
-                </table>
-
-
-            </div>
-        </div>
-
-    </div>
-
-</section>
+</div>
 
 }

@@ -3,150 +3,170 @@
 @main("Portoman") {
 
 
+<div class="column">
 
-<section class="section">
+    <div class="tabs">
+        <ul><li class="is-active"><a>Overview</a></li>
+            <li><a>Fundamentals</a></li>
+            <li><a>Performance</a></li>
+            <li><a>Transactions</a></li>
+        </ul>
+    </div>
 
-  <div class="container">
-    <h1 class="title">Portoman</h1>
-    <h2 class="subtitle">
-      A simple Portfolio Manager for Stocks
-    </h2>
-
-
-    <div class="columns">
-
-      <div class="column is-one-fifth">
-        <aside class="menu">
-          <p class="menu-label">
-            General
-          </p>
-          <ul class="menu-list">
-            <li><a>Dashboard</a></li>
-          </ul>
-          <p class="menu-label">
-            Administration
-          </p>
-          <ul class="menu-list">
-            <li><a>Team Settings</a></li>
-            <li>
-              <a class="is-active">Manage Your Team</a>
-              <ul>
-                <li><a>Members</a></li>
-                <li><a>Plugins</a></li>
-                <li><a>Add a member</a></li>
-              </ul>
-            </li>
-            <li><a href='@routes.TransactionsController.list()'>Transactions</a></li>
-            <li><a>Cloud Storage Environment Settings</a></li>
-            <li><a>Authentication</a></li>
-          </ul>
-          <p class="menu-label">
-            Transactions
-          </p>
-          <ul class="menu-list">
-            <li><a>Import</a></li>
-            <li><a>Transfers</a></li>
-            <li><a>Balance</a></li>
-          </ul>
-        </aside>
-      </div>
-
-
-    <div class="column">
-
-      <table class="table is-striped is-fullwidth">
+    <table class="table is-striped is-fullwidth">
         <thead>
         <tr>
-          <th>Name</th>
-          <th>Symbol</th>
-          <th>Last Price</th>
-          <th>Change</th>
-          <th>Cost basis</th>
-          <th>Market value</th>
-          <th>Gain</th>
-          <th>Gain %</th>
-          <th>Day's gain</th>
-          <th>Overall return</th>
+            <th>Name</th>
+            <th>Symbol</th>
+            <th>Last Price</th>
+            <th>Change</th>
+            <th>Cost basis</th>
+            <th>Market value</th>
+            <th>Gain</th>
+            <th>Gain %</th>
+            <th>Day's gain</th>
+            <th>Overall return</th>
         </tr>
         </thead>
 
         <tbody>
         <tr>
-          <td>Zalando</td>
-          <td>ZAL</td>
-          <td>47.95 (+1.20%)</td>
-          <td>0.00 (closed)</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>64.64%</td>
+            <td>Zalando</td>
+            <td>ZAL</td>
+            <td>47.95 (+1.20%)</td>
+            <td>0.00 (closed)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>64.64%</td>
         </tr>
         </tbody>
 
-      </table>
+    </table>
+
+    <a href="#add-transaction">+ Add transaction</a>
 
 
-      <h3>Import transactions</h3>
+    <form action="/" class="hidden" id="add-transaction-form">
 
-      @if(flash.data.contains("success")) {
-      <div class="notification is-success">@flash.get("success")</div>
-      } else if (flash.data.contains("error")) {
-      <div class="notification is-danger">@flash.get("error")</div>
-      }
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Symbol</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="text" placeholder="ticker">
+                </div>
+            </div>
+        </div>
 
-      @helper.form(action = helper.CSRF(routes.HomeController.importFromCsv), 'enctype -> "multipart/form-data") {
-      <input type="file" name="csv_file">
-      <p>
-        <input type="submit">
-      </p>
-      }
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Type</label>
+            </div>
+            <div class="field-body">
+                <div class="field is-narrow">
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select>
+                                <option>Buy</option>
+                                <option>Sell</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-      }
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Date</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Transaction date">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Shares</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Number of shares">
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
-    </div>
-  </div>
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Price</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter total cost">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  </div>
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Commission</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter value">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-</section>
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Notes</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <textarea class="textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-primary">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+    </form>
 
-<div class="mini-menu-wrapper">
-  <ul class="mini-menu">
-    <li><a href="">Overview</a></li>
-    <li><a href="">Fundamentals</a></li>
-    <li><a href="">Performance</a></li>
-    <li><a href="">Transactions</a></li>
-  </ul>
 </div>
 
 
-
-
-<form action="/" class="hidden" id="add-transaction-form">
-
-  Symbol: <input type="text" name="symbol">
-  Type: <select name="type">
-  <option value="buy">Buy</option>
-  <option value="sell">Sell</option>
-</select>
-  Date: <input type="text" name="date">
-  Shares: <input type="text" name="shares">
-  Price: <input type="text" name="price">
-  Commission: <input type="text" name="commision">
-  Notes: <input type="text" name="notes">
-
-  <button type="button">Add</button>
-
-</form>
-
-<a href="#add-transaction">+ Add transaction</a>
-
-
+}
 
 
 
