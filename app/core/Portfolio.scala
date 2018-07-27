@@ -21,10 +21,11 @@ object Stock {
 
   /**
     * What is the current market value.
-    * @param stock
+    * @param data
     * @return
     */
-  def marketValue(stock: TxPoint): BigDecimal = stock.units * stock.price
+  def marketValue(data: List[TxPoint], price: BigDecimal): BigDecimal =
+    data.foldLeft(BigDecimal(0)) {(acc, s) => acc + s.typ * s.units} * price
 
 
   /**
@@ -59,11 +60,9 @@ object StockDB {
       "from transactions t join securities s on t.security_id = s.id order by t.id asc;")
       .as(parser.*)
 
-    val t: Map[StockInfo, List[TxPoint]] = stocks.groupBy(stock => stock.info).map {
+    stocks.groupBy(stock => stock.info).map {
       case (stockInfo, list) => stockInfo -> list.flatMap(_.points)
     }
-    play.Logger.info(t.toString)
-    t
   }
 
 }

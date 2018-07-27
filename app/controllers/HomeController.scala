@@ -4,6 +4,7 @@ import java.io.StringReader
 import java.nio.file.Paths
 import javax.inject._
 
+import alphavantage.AlphaBot
 import core.{Stock, StockDB, StockInfo, TxPoint}
 import models.GoogleParser
 import org.apache.commons.csv.CSVFormat
@@ -11,10 +12,14 @@ import play.api._
 import play.api.db.Database
 import play.api.mvc._
 import modelviews.StockPortOverviewMV
+import play.api.libs.ws.WSClient
+
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents,
-                               database: Database) extends AbstractController(cc) {
+                               database: Database,
+                               ws: WSClient) extends AbstractController(cc) {
 
 
   def index() = Action { implicit request: Request[AnyContent] =>
@@ -22,8 +27,15 @@ class HomeController @Inject()(cc: ControllerComponents,
       StockDB.getAll()
     }
 
+    val ab = new AlphaBot(ws)
+
     val positions = stocks.map { case (info, points) =>
-      StockPortOverviewMV(info.name, info.ticker, Stock.purchaseValue(points))
+      val lastPrice = ab.lastPriceForTicker(info.ticker)
+      StockPortOverviewMV(name=info.name,
+        ticker=info.ticker,
+        purchaseValue=Stock.purchaseValue(points),
+        closePrice=lastPrice,
+        marketValue=Stock.marketValue(points, lastPrice))
     }.toList
 
     Ok(views.html.index(positions))
