@@ -1,4 +1,6 @@
-@()(implicit flash: Flash, request: RequestHeader)
+@import modelviews.StockPortOverviewMV
+
+@(stocks: List[StockPortOverviewMV])(implicit flash: Flash, request: RequestHeader)
 
 @main("Portoman") {
 
@@ -30,18 +32,20 @@
         </thead>
 
         <tbody>
+        @for(s <- stocks) {
         <tr>
-            <td>Zalando</td>
-            <td>ZAL</td>
+            <td>@s.name</td>
+            <td>@s.ticker</td>
             <td>47.95 (+1.20%)</td>
             <td>0.00 (closed)</td>
-            <td></td>
+            <td class="has-text-right">@s.moneyPurchaseValue()</td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
             <td>64.64%</td>
         </tr>
+        }
         </tbody>
 
     </table>

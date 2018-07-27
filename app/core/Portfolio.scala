@@ -8,7 +8,7 @@ import modelviews.TrxListMV
 
 case class TxPoint(typ: Int, units: Int, price: BigDecimal, commission: BigDecimal)
 
-object TxPoint {
+object Stock {
 
   /**
     * How much was paid for it.
@@ -54,15 +54,16 @@ object StockDB {
       Stock(StockInfo(name, ticker), List(TxPoint(intTyp, units, BigDecimal(price), BigDecimal(commission))))
   }
 
-  def getAll()(implicit db: Connection): List[Stock] = {
-    val b = Map[StockInfo, List[TxPoint]]()
+  def getAll()(implicit db: Connection): Map[StockInfo, List[TxPoint]] = {
     val stocks = SQL("select t.type, t.units, t.price, t.commission, t.created_at, t.notes, s.name, s.ticker " +
       "from transactions t join securities s on t.security_id = s.id order by t.id asc;")
       .as(parser.*)
 
-    val t = stocks.groupBy(stock => stock.info).map { case (stockInfo, list) => stockInfo -> list.flatMap(_.points) }
+    val t: Map[StockInfo, List[TxPoint]] = stocks.groupBy(stock => stock.info).map {
+      case (stockInfo, list) => stockInfo -> list.flatMap(_.points)
+    }
     play.Logger.info(t.toString)
-    stocks
+    t
   }
 
 }
