@@ -4,7 +4,7 @@ import java.io.StringReader
 import java.nio.file.Paths
 import javax.inject._
 
-import alphavantage.AlphaBot
+import datasources.AlphaVantageClient
 import core.{Stock, StockDB, StockInfo, TxPoint}
 import models.GoogleParser
 import org.apache.commons.csv.CSVFormat
@@ -27,10 +27,10 @@ class HomeController @Inject()(cc: ControllerComponents,
       StockDB.getAll()
     }
 
-    val ab = new AlphaBot(ws)
-
+    //val ab = new AlphaBot(ws)
+    val lastPrice = BigDecimal(0)
     val positions = stocks.map { case (info, points) =>
-      val lastPrice = ab.lastPriceForTicker(info.ticker)
+      //val lastPrice = ab.lastPriceForTicker(info.ticker)
       StockPortOverviewMV(name=info.name,
         ticker=info.ticker,
         purchaseValue=Stock.purchaseValue(points),

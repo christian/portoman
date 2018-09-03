@@ -39,7 +39,12 @@ object Stock {
 
 case class StockInfo(name: String, ticker: String)
 
-case class Stock(info: StockInfo, points: List[TxPoint])
+case class Stock(info: StockInfo, points: List[TxPoint]) {
+
+  def isPositionClosed() =
+    points.foldLeft(BigDecimal(0)) {(acc, s) => acc + s.typ} == BigDecimal(0)
+
+}
 
 object StockDB {
 
@@ -50,7 +55,6 @@ object StockDB {
     double("price") ~ //FIXME loosing prevcision ?
     double("commission") map {
     case name ~ ticker ~ typ ~ units ~ price ~ commission =>
-      play.Logger.info(typ)
       val intTyp = if (typ == "Buy") 1 else -1
       Stock(StockInfo(name, ticker), List(TxPoint(intTyp, units, BigDecimal(price), BigDecimal(commission))))
   }

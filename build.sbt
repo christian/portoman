@@ -15,6 +15,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "anorm" % "2.5.3",
   "mysql" % "mysql-connector-java" % "5.1.41",
   "org.joda" % "joda-money" % "0.12",
+  "joda-time" % "joda-time" % "2.10",
   "org.apache.commons" % "commons-csv" % "1.5",
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
 )
