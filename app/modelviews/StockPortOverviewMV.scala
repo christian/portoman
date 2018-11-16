@@ -13,8 +13,10 @@ import scala.math.BigDecimal.RoundingMode
 case class StockPortOverviewMV(name: String,
                                ticker: String,
                                closePrice: BigDecimal,
+                               dayChange: BigDecimal,
                                purchaseValue: BigDecimal,
-                               marketValue: BigDecimal) {
+                               marketValue: BigDecimal,
+                               totalUnitsOwned: Int) {
 
   import StockPortOverviewMV._
 
@@ -29,6 +31,8 @@ case class StockPortOverviewMV(name: String,
     * @return
     */
   def marketValue_AsMoney(): String = formatter.format(marketValue)
+
+  def closePrice_AsMoney(): String = formatter.format(closePrice)
 
   def gain: BigDecimal = marketValue - purchaseValue
 

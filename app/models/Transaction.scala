@@ -41,7 +41,8 @@ object GoogleParser {
         id=None,
         name=record.get("Name"),
         ticker=record.get(0), // Funny, "Symbol" doesn't work
-        closePrice=None
+        closePrice=None,
+        updatedAt=new Date()
       )
 
       val formatter = DateTimeFormatter.ofPattern("MMM d, uuuu")

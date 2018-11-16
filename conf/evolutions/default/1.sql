@@ -7,6 +7,7 @@ CREATE TABLE securities (
     name varchar(255) NOT NULL,
     ticker varchar(10) NOT NULL,
     close_price decimal(10, 2),
+    updated_at timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
 

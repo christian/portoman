@@ -20,6 +20,7 @@
         <tr>
             <th>Name</th>
             <th>Symbol</th>
+            <th>Units</th>
             <th>Last Price</th>
             <th>Change</th>
             <th>Cost basis</th>
@@ -36,8 +37,19 @@
         <tr>
             <td>@s.name</td>
             <td>@s.ticker</td>
-            <td>@s.closePrice (+1.20%)</td>
-            <td>0.00 (closed)</td>
+            <td class="has-text-right">@s.totalUnitsOwned</td>
+            <td class="has-text-right">@s.closePrice_AsMoney()
+                @if(s.dayChange < 0) {
+                <p class="is-small has-text-danger">@s.dayChange%</p>
+                } else {
+                <p class="is-small has-text-success">+@s.dayChange%</p>
+                }
+            </td>
+            <td>
+                @if(s.totalUnitsOwned == 0) {
+                    closed
+                }
+            </td>
             <td class="has-text-right">@s.purchaseValue_AsMoney()</td>
             <td class="has-text-right">@s.marketValue_AsMoney</td>
             <td class="has-text-right">@s.gain_AsMoney()</td>

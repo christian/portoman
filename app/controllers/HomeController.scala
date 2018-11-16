@@ -28,14 +28,15 @@ class HomeController @Inject()(cc: ControllerComponents,
     }
 
     //val ab = new AlphaBot(ws)
-    val lastPrice = BigDecimal(0)
     val positions = stocks.map { case (info, points) =>
       //val lastPrice = ab.lastPriceForTicker(info.ticker)
       StockPortOverviewMV(name=info.name,
         ticker=info.ticker,
         purchaseValue=Stock.purchaseValue(points),
-        closePrice=lastPrice,
-        marketValue=Stock.marketValue(points, lastPrice))
+        closePrice=info.closePrice,
+        dayChange=info.dayChange,
+        marketValue=Stock.marketValue(points, info.closePrice),
+        totalUnitsOwned=Stock.totalUnitsOwned(points))
     }.toList
 
     Ok(views.html.index(positions))

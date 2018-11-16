@@ -5,7 +5,7 @@ import java.util.Date
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import javax.inject.{Inject, Named}
-import org.joda.time.DateTime
+import org.joda.time.{DateTime, DateTimeConstants}
 import org.joda.time.format.DateTimeFormat
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
@@ -29,36 +29,6 @@ class AlphaVantageClient(ws: WSClient) {
 
 }
 
-case object Tick
-
-class AlphaVantageScheduler @Inject()(actorSystem: ActorSystem,
-                                      @Named("alpha-vantage-fetcher") someActor: ActorRef) {
-
-  actorSystem.scheduler.schedule(
-    initialDelay = 0.microseconds,
-    interval = 10.seconds,
-    receiver = someActor,
-    message = Tick
-  )
-
-}
-
-object AlphaVantageActor {
-  def props = Props[AlphaVantageActor]
-
-  //case class SayHello(name: String)
-}
-
-class AlphaVantageActor extends Actor {
- // import HelloActor._
-
-  def receive = {
-    case Tick =>
-      play.Logger.info("Send tick");
-  }
-}
-
-
 object AlphaVantageClient {
 
   val API_KEY = "7X68QKIMXY5W27VN"
@@ -74,14 +44,50 @@ object AlphaVantageClient {
   def previousTradingDay(): String = {
     val dateFormat = DateTimeFormat.forPattern("yyyy-MM-dd")
     val today: DateTime = new DateTime()
-    val yesterday = today.minusDays(1)
-    dateFormat.print(yesterday)
+    val prevTadeDay = today.getDayOfWeek() match {
+      case DateTimeConstants.MONDAY => today.minusDays(3)
+      case DateTimeConstants.SUNDAY => today.minusDays(2)
+      case _ => today.minusDays(1)
+    }
+
+    dateFormat.print(prevTadeDay)
   }
 
 }
 
 
 
+
+class AlphaVantageScheduler @Inject()(actorSystem: ActorSystem,
+                                      @Named("alpha-vantage-fetcher") someActor: ActorRef) {
+  import AlphaVantageActor._
+
+  actorSystem.scheduler.schedule(
+    initialDelay = 0.microseconds,
+    interval = 10.seconds,
+    receiver = someActor,
+    message = Tick
+  )
+
+}
+
+object AlphaVantageActor {
+  def props = Props[AlphaVantageActor]
+
+  case object Tick
+}
+
+class AlphaVantageActor extends Actor {
+  import AlphaVantageActor._
+
+  def receive = {
+    case Tick =>
+      play.Logger.info("Send tick");
+  }
+}
+
+
+// TODO maybe use this
 trait PriceBot {
 
   def closePriceForSymbols(sym: List[String]) = ???

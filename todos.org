@@ -1,0 +1,12 @@
+* Web APP
+** TODO Finish main table
+*** TODO populate preivous close, compute day gain;
+*** TODO compute total gain
+*** TODO toggle closed
+*** TODO make JS on tabs work
+*** TODO remove transactions -> they have dedicated menu entry
+** TODO Transsactions view
+*** TODO order by date
+*** TODO ability to modify and delete transaction (maybe ajax)
+* Web crawler
+** TODO make a crawler and an API? - investigate;
