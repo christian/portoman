@@ -1,7 +1,7 @@
 # --- !Ups
 
-ALTER TABLE securities ADD COLUMN day_change_percent DECIMAL(10, 2);
-ALTER TABLE securities ADD COLUMN day_change DECIMAL(10, 2);
+ALTER TABLE securities ADD COLUMN day_change_percent real;
+ALTER TABLE securities ADD COLUMN day_change real;
 
 # --- !Downs
 

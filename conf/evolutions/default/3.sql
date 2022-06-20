@@ -1,6 +1,6 @@
 # --- !Ups
 
-ALTER TABLE securities ADD COLUMN previous_close_price DECIMAL(10, 2);
+ALTER TABLE securities ADD COLUMN previous_close_price real;
 
 # --- !Downs
 

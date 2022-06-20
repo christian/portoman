@@ -3,44 +3,39 @@
 # --- !Ups
 
 CREATE TABLE securities (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
-    name varchar(255) NOT NULL,
-    ticker varchar(10) NOT NULL,
-    close_price decimal(10, 2),
-    updated_at timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
+    id integer primary key AUTOINCREMENT,
+    name char(255) NOT NULL,
+    ticker char(10) NOT NULL,
+    close_price real,
+    updated_at timestamp
 );
 
 CREATE TABLE positions (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
-    status varchar(20) NOT NULL,
-    security_id bigint(20) NOT NULL,
-    total_units bigint(20) NOT NULL,
-    total_cost decimal(15, 2),
-    PRIMARY KEY (id),
+    id integer primary key AUTOINCREMENT,
+    status char(20) NOT NULL,
+    security_id integer NOT NULL,
+    total_units integer NOT NULL,
+    total_cost real,
     FOREIGN KEY(security_id) REFERENCES securities(id)
 );
 
 CREATE TABLE transactions (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
+    id integer primary key AUTOINCREMENT,
     uuid char(36) NOT NULL,
-    type varchar(10) NOT NULL,
-    security_id bigint(20) NOT NULL,
-    units bigint(20) NOT NULL,
-    price decimal(15, 2) NOT NULL,
+    type char(10) NOT NULL,
+    security_id integer NOT NULL,
+    units integer NOT NULL,
+    price real NOT NULL,
     created_at timestamp,
-    position_id bigint(11),
-    commission decimal(15, 2),
-    notes varchar(255),
-    PRIMARY KEY (id),
+    position_id integer,
+    commission real,
+    notes char(255),
     FOREIGN KEY(position_id) REFERENCES positions(id),
     FOREIGN KEY(security_id) REFERENCES securities(id)
 );
 
 # --- !Downs
 
-SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE transactions;
 DROP TABLE positions;
 DROP TABLE securities;
-SET FOREIGN_KEY_CHECKS=1;
